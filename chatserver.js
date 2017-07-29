@@ -3,7 +3,7 @@ const server = require('http').Server(app)
 const requestify = require('requestify')
 const io = require('socket.io')(server)
 
-const port = 8000
+const port = 7000
 
 io.on('connection', (socket) => {
     console.log('User connected', socket.id)
