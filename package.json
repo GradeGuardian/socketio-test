@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/GradeGuardian/socketio-test#readme",
   "dependencies": {
+    "cors": "^2.8.4",
     "express": "^4.15.3",
+    "requestify": "^0.2.5",
     "socket.io": "^2.0.3"
   }
 }

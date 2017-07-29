@@ -1,21 +1,48 @@
 const app = require('express')()
-const http = require('http').Server(app)
-const io = require('socket.io')(http)
+const server = require('http').Server(app)
+const requestify = require('requestify')
+const io = require('socket.io')(server)
 
 const port = 8000
 
 io.on('connection', (socket) => {
-    console.log('User connected')
+    console.log('User connected', socket.id)
 
     socket.on('disconnect', () => {
         console.log('User disconnected')
     })
 
-    socket.on('add-message', (message) => {
-        
+    socket.on('message', (message) => {
+        console.log('Got message: ', message)
     })
+
+    console.log('Sending welcome')
+    socket.emit('message', newMessage('Hi, I\'m Desiree.'))
+
+    setTimeout( () => {
+        socket.emit('message', newMessage("I love Chuck Norris jokes, I sure hope you do too."))
+
+        setTimeout( () => {
+            setInterval(() => {
+                requestify.get('http://api.icndb.com/jokes/random').then( res => {
+                    res.getBody()
+                    let data = JSON.parse(res.body)
+                    socket.emit('message', newMessage(data.value.joke))
+                })
+            }, 8000)
+        }, 1000)
+    }, 2000)
+    
 })
 
-http.listen(port, () => {
+server.listen(port, () => {
     console.log('Server started on port ', port)
 })
+
+function newMessage(text) {
+    return {
+        message: text,
+        isSenderServer: true,
+        sent: true
+    }
+}
