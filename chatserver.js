@@ -1,3 +1,4 @@
+const express = require('express')
 const app = require('express')()
 const server = require('http').Server(app)
 const requestify = require('requestify')
@@ -34,6 +35,13 @@ io.on('connection', (socket) => {
     }, 2000)
     
 })
+
+app.use(express.static(__dirname + '/public'));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
 
 server.listen(port, () => {
     console.log('Server started on port ', port)
