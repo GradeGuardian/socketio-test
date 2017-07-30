@@ -15,9 +15,8 @@ io.on('connection', (socket) => {
 
     socket.on('message', (message) => {
         console.log('Got message: ', message)
-
-        setTimeout( () => socket.emit('message-success', { }), 1000)
         
+        socket.emit('message-success', { })
     })
 
     console.log('Sending welcome')
